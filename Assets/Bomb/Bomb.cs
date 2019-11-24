@@ -11,6 +11,7 @@ public class Bomb : MonoBehaviour
     public int StayTimerCost = 15;
     public float ExplosionRadius = 3;
     public LayerMask ExplosionLayer;
+    public GameObject ExplosionPrefab;
     private bool HasExploded = false;
     public void Start()
     {
@@ -39,8 +40,6 @@ public class Bomb : MonoBehaviour
         //Quando uma tile é destruida as adjacentes são reconstruidas, então é necessário adquirir a referencia
         //a nova tile entre destruições. Pegando a referencia a posição na grid em vez ao objeto é possivel
         //manter a referencia ao objeto que vai virar.
-        Debug.Log("Indo Destruir");
-        
         var tilesToDestroy = new List<Vector3Int>();
         foreach (var hit in hits)
         {
@@ -51,6 +50,7 @@ public class Bomb : MonoBehaviour
             GameController.Instance.Tilemap.SetTile(tile,null);
         
         Destroy(gameObject);
+        Instantiate(ExplosionPrefab).transform.position = transform.position;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

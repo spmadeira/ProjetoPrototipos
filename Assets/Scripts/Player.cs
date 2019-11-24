@@ -92,6 +92,9 @@ public class Player : MonoBehaviour
 
     private void OnGUI()
     {
+        if (isShooting)
+            return;
+        
         GUI.color = EneryBarColor;
         var position = camera.WorldToScreenPoint(EnergyBarLocation.position);
         var convertedPosY = Screen.height - position.y;
