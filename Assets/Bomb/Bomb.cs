@@ -15,7 +15,7 @@ public class Bomb : MonoBehaviour
     public GameObject ExplosionPrefab;
     private bool HasExploded = false;
 
-    public UnityEvent ExplodeEvent;
+    public UnityEvent ExplodeEvent = new UnityEvent();
     public void Start()
     {
         HasExploded = false;
@@ -52,9 +52,9 @@ public class Bomb : MonoBehaviour
         foreach (var tile in tilesToDestroy)
             GameController.Instance.Tilemap.SetTile(tile,null);
         
-        Destroy(gameObject);
         Instantiate(ExplosionPrefab).transform.position = transform.position;
         ExplodeEvent.Invoke();
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D other)

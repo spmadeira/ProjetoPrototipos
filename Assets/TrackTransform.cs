@@ -17,8 +17,11 @@ public class TrackTransform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Track)
+        if (!Track || Target == null)
+        {
+            rigidbody2D.velocity = Vector2.zero;
             return;
+        }
         
         var delta = Target.position - transform.position + (Vector3)Offset;
         rigidbody2D.velocity = delta * TrackSpeed;

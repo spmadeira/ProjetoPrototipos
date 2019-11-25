@@ -160,7 +160,7 @@ MonoBehaviour:
   - {fileID: 1697979693}
   - {fileID: 1098320245}
   - {fileID: 1453547080}
-  camera: {fileID: 0}
+  camera: {fileID: 519420030}
   ActivePlayer: {fileID: 0}
 --- !u!4 &179415988
 Transform:
@@ -243,6 +243,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376036, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
@@ -321,7 +326,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.11320752, g: 0.03080827, b: 0.0074759657, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -46734,6 +46739,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376036, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
@@ -47211,6 +47221,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376036, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
@@ -47301,6 +47316,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376036, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}

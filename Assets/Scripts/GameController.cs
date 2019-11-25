@@ -44,23 +44,24 @@ public class GameController : MonoBehaviour
     //Jogador atira bomba, perde controle e camera, bomba ganha camera
     //Bomba vai e explode. Bomba perde camera.
     //Outro jogador recebe bomba e camera.
-    
     private void Start()
     {
         Teams = new List<List<Player>>{Team1, Team2}.GetEnumerator();
         Teams.MoveNext();
 
         CurrentTeam = Teams.Current.GetEnumerator();
-        NextPlayer();
+        PlayerTurn(NextPlayer());
     }
 
     private void PlayerTurn(Player player)
     {
+        ActivePlayer = player;
+        player.CurrentEnergy = 100;
         camera.Target = player.transform;
         player.ShootBombEvent.AddListener(bomb =>
         {
             FollowBomb(bomb);
-            NextPlayer();
+            ActivePlayer = null;
             player.ShootBombEvent.RemoveAllListeners();
         });
     }
@@ -68,21 +69,23 @@ public class GameController : MonoBehaviour
     private void FollowBomb(Bomb bomb)
     {
         camera.Target = bomb.transform;
-        bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(ActivePlayer))));
+        bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(NextPlayer()))));
+        //bomb.ExplodeEvent.AddListener(() => Debug.Log("aaaa"));
     }
 
-    private void NextPlayer()
+    private Player NextPlayer()
     {
         CurrentTeam.MoveNext();
 
         if (CurrentTeam.Current != null)
         {
-            PlayerTurn(CurrentTeam.Current);
+            //PlayerTurn(CurrentTeam.Current);
+            return CurrentTeam.Current;
         }
         else
         {
             Teams.MoveNext();
-            if (Teams.Current != null)
+            if (Teams.Current == null)
             {
                 Teams.Reset();
                 Teams.MoveNext();
@@ -90,7 +93,8 @@ public class GameController : MonoBehaviour
 
             CurrentTeam = Teams.Current.GetEnumerator();
             CurrentTeam.MoveNext();
-            PlayerTurn(CurrentTeam.Current);
+            //PlayerTurn(CurrentTeam.Current);
+            return CurrentTeam.Current;
         }
     }
 

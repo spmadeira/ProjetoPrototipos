@@ -11,9 +11,10 @@ public class Player : MonoBehaviour
     private Animator animator;
     private Vector3 baseScale;
     private Camera camera;
-    
-    public bool canJump => CurrentEnergy-JumpEnergyCost >= 0 && !isShooting;
-    public bool canMove => CurrentEnergy-(WalkEnergyCost*Time.fixedDeltaTime) >= 0 && !isShooting;
+
+    public bool canShoot => GameController.Instance.ActivePlayer == this;
+    public bool canJump => CurrentEnergy-JumpEnergyCost >= 0 && !isShooting && GameController.Instance.ActivePlayer == this;
+    public bool canMove => CurrentEnergy-(WalkEnergyCost*Time.fixedDeltaTime) >= 0 && !isShooting && GameController.Instance.ActivePlayer == this;
     public bool isShooting = false;
     private bool IsGrounded => feet.Select(foot => Physics2D.OverlapCircle(foot.position, FeetCollisionRadius, CollisionLayer)).Any(hit => hit != null);
 
@@ -42,23 +43,23 @@ public class Player : MonoBehaviour
     public float BombTorqueMultiplier;
     private Vector2 BombAngleVector => new Vector2(Mathf.Cos(BombAngle * Mathf.Deg2Rad) * -(Mathf.Sign(transform.localScale.x)), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
 
-    public UnityEvent<Bomb> ShootBombEvent;
+    public BombEvent ShootBombEvent = new BombEvent();
+    
+    [System.Serializable]
+    public class BombEvent : UnityEvent<Bomb> { }
     
     public void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        baseScale = transform.localScale;
+        baseScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         camera = Camera.main;
     }
 
     private void Update()
     {
         UpdateAnimator();
-
-        if (GameController.Instance.ActivePlayer != this)
-            return;
-
+        
         if (Input.GetKeyDown(KeyCode.Z))
             Jump();
 
@@ -127,7 +128,7 @@ public class Player : MonoBehaviour
     private void UpdateAnimator()
     {
         var hInput = Input.GetAxisRaw("Horizontal");
-        var isMoving = hInput != 0;
+        var isMoving = (hInput != 0) && canMove;
         
         animator.SetBool("IsMoving", isMoving && canMove);
         animator.SetBool("IsGrounded", IsGrounded);
@@ -151,12 +152,16 @@ public class Player : MonoBehaviour
 
     private void StartShoot()
     {
+        if (!canShoot)
+            return;
         isShooting = true;
         animator.SetBool("IsShooting",true);
     }
 
     private void EndShoot()
     {
+        if (!canShoot)
+            return;
         isShooting = false;
         animator.SetBool("IsShooting",false);
     }
