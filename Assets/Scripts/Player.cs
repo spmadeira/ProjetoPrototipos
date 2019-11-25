@@ -12,9 +12,9 @@ public class Player : MonoBehaviour
     private Vector3 baseScale;
     private Camera camera;
 
-    public bool canShoot => GameController.Instance.ActivePlayer == this;
-    public bool canJump => CurrentEnergy-JumpEnergyCost >= 0 && !isShooting && GameController.Instance.ActivePlayer == this;
-    public bool canMove => CurrentEnergy-(WalkEnergyCost*Time.fixedDeltaTime) >= 0 && !isShooting && GameController.Instance.ActivePlayer == this;
+    public bool canShoot => true;
+    public bool canJump => CurrentEnergy-JumpEnergyCost >= 0 && playerState == PlayerState.Moving;
+    public bool canMove => CurrentEnergy-(WalkEnergyCost*Time.fixedDeltaTime) >= 0 && playerState == PlayerState.Moving;
     public bool isShooting = false;
     private bool IsGrounded => feet.Select(foot => Physics2D.OverlapCircle(foot.position, FeetCollisionRadius, CollisionLayer)).Any(hit => hit != null);
 
@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     public float CurrentEnergy;
     public int JumpEnergyCost = 20;
     public int WalkEnergyCost = 10;
+    public float AngleChangeSpeed = 2;
     public float MovementSpeed = 5;
     public float JumpForce = 750;
     public float FeetCollisionRadius = 0.05f;
@@ -41,10 +42,13 @@ public class Player : MonoBehaviour
     [Range(0, 1)] public float BombForce;
     public float BombForceMultiplier;
     public float BombTorqueMultiplier;
-    private Vector2 BombAngleVector => new Vector2(Mathf.Cos(BombAngle * Mathf.Deg2Rad) * -(Mathf.Sign(transform.localScale.x)), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
+    public PlayerState playerState = PlayerState.Inactive;
+    private Vector2 BombAngleVector => new Vector2(Mathf.Cos(BombAngle * Mathf.Deg2Rad), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
 
     public BombEvent ShootBombEvent = new BombEvent();
-    
+
+    public enum PlayerState { Inactive, Moving, Shooting };
+
     [System.Serializable]
     public class BombEvent : UnityEvent<Bomb> { }
     
@@ -54,33 +58,65 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         baseScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         camera = Camera.main;
+
     }
 
     private void Update()
     {
-        UpdateAnimator();
-        
-        if (Input.GetKeyDown(KeyCode.Z))
-            Jump();
+        //UpdateAnimator();
 
-        if (Input.GetKeyDown(KeyCode.X))
+        //if (Input.GetKeyDown(KeyCode.Z))
+        //    Jump();
+
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    if (!isShooting)
+        //        StartShoot();
+        //    else
+        //        EndShoot();
+        //}
+        UpdateAnimator();
+        switch (playerState)
         {
-            if (!isShooting)
-                StartShoot();
-            else
-                EndShoot();
+            case PlayerState.Inactive:
+                break;
+            case PlayerState.Moving:
+                if (Input.GetButtonDown("Jump")){
+                    Jump();
+                }
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    StartShoot();
+                }
+                break;
+            case PlayerState.Shooting:
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    EndShoot();
+                }
+                var hInput = Input.GetAxisRaw("Horizontal");
+                if (hInput != 0)
+                {
+                    AdjustAngle(hInput*AngleChangeSpeed);
+                }
+                break;
         }
     }
 
     private void FixedUpdate()
     {
-        if (GameController.Instance.ActivePlayer != this)
-            return;
-        
-        var hInput = Input.GetAxisRaw("Horizontal");
-        var vInput = Input.GetAxisRaw("Vertical");
-        
-        Movement(hInput);
+        if (playerState == PlayerState.Moving)
+        {
+            var hInput = Input.GetAxisRaw("Horizontal");
+            var vInput = Input.GetAxisRaw("Vertical");
+
+            Movement(hInput);
+        }
+    }
+
+    private void AdjustAngle(float angleDelta)
+    {
+        BombAngle = Mathf.Clamp(BombAngle + angleDelta, 0, 180);
     }
 
     private void Movement(float hInput)
@@ -95,15 +131,15 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        foreach (var foot in feet)
-        {
-            Gizmos.DrawSphere(foot.position,FeetCollisionRadius);
-        }
+        //foreach (var foot in feet)
+        //{
+        //    Gizmos.DrawSphere(foot.position,FeetCollisionRadius);
+        //}
     }
 
     private void OnGUI()
     {
-        if (isShooting || GameController.Instance.ActivePlayer != this)
+        if (playerState != PlayerState.Moving)
             return;
         
         var position = camera.WorldToScreenPoint(EnergyBarLocation.position);
@@ -134,7 +170,7 @@ public class Player : MonoBehaviour
         animator.SetBool("IsGrounded", IsGrounded);
         animator.SetFloat("VerticalSpeed", rigidbody2d.velocity.y);
 
-        if (isMoving)
+        if (playerState == PlayerState.Moving && hInput != 0)
         {
             var direction = -Mathf.Sign(hInput);
             transform.localScale = new Vector3(baseScale.x*direction,baseScale.y,baseScale.z);
@@ -155,6 +191,7 @@ public class Player : MonoBehaviour
         if (!canShoot)
             return;
         isShooting = true;
+        playerState = PlayerState.Shooting;
         animator.SetBool("IsShooting",true);
     }
 
@@ -163,6 +200,7 @@ public class Player : MonoBehaviour
         if (!canShoot)
             return;
         isShooting = false;
+        playerState = PlayerState.Inactive;
         animator.SetBool("IsShooting",false);
     }
 

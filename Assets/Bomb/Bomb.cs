@@ -13,11 +13,16 @@ public class Bomb : MonoBehaviour
     public float ExplosionRadius = 3;
     public LayerMask ExplosionLayer;
     public GameObject ExplosionPrefab;
+    public FontStyle TimerFont;
+    public int TimerFontSize;
+    public Transform TimerLocation;
     private bool HasExploded = false;
+    private Camera camera;
 
     public UnityEvent ExplodeEvent = new UnityEvent();
     public void Start()
     {
+        camera = Camera.main;
         HasExploded = false;
     }
 
@@ -33,6 +38,22 @@ public class Bomb : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, ExplosionRadius);
+    }
+
+    private void OnGUI()
+    {
+        //var secondsUntilExplosion = (int)(Timer * Time.fixedDeltaTime);
+        //var centerPosition = camera.WorldToScreenPoint(TimerLocation.position);
+
+        //GUI.color = Color.red;
+        //var style = new GUIStyle
+        //{
+        //    alignment = TextAnchor.MiddleCenter,
+        //    fontSize = TimerFontSize,
+        //    fontStyle = TimerFont,
+        //};
+
+        //GUI.Label(new Rect(centerPosition,new Vector2(0,0)), secondsUntilExplosion.ToString(), style);
     }
 
     private void Explode()

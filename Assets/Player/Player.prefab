@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7611562634947707459}
   - component: {fileID: 7611562634947707458}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Feet2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7611562635375861957}
   - component: {fileID: 7611562635375861956}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BombSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 7611562635936376038}
   - component: {fileID: 7611562635936376025}
   - component: {fileID: 7611562635936376027}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db5dbb2780870e40ab12f5a313892e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canShoot: 0
   isShooting: 0
   MaxEnergy: 100
   CurrentEnergy: 100
@@ -275,6 +276,10 @@ MonoBehaviour:
   BombForce: 1
   BombForceMultiplier: 700
   BombTorqueMultiplier: 160
+  playerState: 0
+  ShootBombEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &7611562635936376025
 Rigidbody2D:
   serializedVersion: 4
@@ -321,7 +326,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7611562635983981733}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnergyBarLocation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7611562636360281787}
   - component: {fileID: 7611562636360281786}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AngleIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,7 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7611562636659950230}
   - component: {fileID: 7611562636659950217}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Feet1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -480,7 +485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7611562636785559164}
   - component: {fileID: 7611562636785559167}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AngleIndicatorCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

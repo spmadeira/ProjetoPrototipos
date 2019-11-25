@@ -19,8 +19,9 @@ public class IndicateAngle : MonoBehaviour
                 Indicator.SetActive(true);
 
             var rawAngle = Player.BombAngle;
-            var actualAngle = Mathf.Sign(Player.transform.localScale.x) == 1 ? 180 - rawAngle : rawAngle;
-            
+            //var actualAngle = Mathf.Sign(Player.transform.localScale.x) == 1 ? 180 - rawAngle : rawAngle;
+            var actualAngle = 180 - rawAngle;
+
             transform.rotation = Quaternion.Euler(0, 0, actualAngle - 90);
         }
     }

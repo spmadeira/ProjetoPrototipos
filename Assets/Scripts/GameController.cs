@@ -57,6 +57,7 @@ public class GameController : MonoBehaviour
     {
         ActivePlayer = player;
         player.CurrentEnergy = 100;
+        player.playerState = Player.PlayerState.Moving;
         camera.Target = player.transform;
         player.ShootBombEvent.AddListener(bomb =>
         {
@@ -70,7 +71,6 @@ public class GameController : MonoBehaviour
     {
         camera.Target = bomb.transform;
         bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(NextPlayer()))));
-        //bomb.ExplodeEvent.AddListener(() => Debug.Log("aaaa"));
     }
 
     private Player NextPlayer()
