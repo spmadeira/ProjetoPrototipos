@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     public float BombForceMultiplier;
     public float BombTorqueMultiplier;
     public PlayerState playerState = PlayerState.Inactive;
-    private Vector2 BombAngleVector => new Vector2(Mathf.Cos(BombAngle * Mathf.Deg2Rad), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
+    private Vector2 BombAngleVector => new Vector2(-Mathf.Cos(BombAngle * Mathf.Deg2Rad), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
 
     public BombEvent ShootBombEvent = new BombEvent();
 
@@ -117,6 +117,12 @@ public class Player : MonoBehaviour
     private void AdjustAngle(float angleDelta)
     {
         BombAngle = Mathf.Clamp(BombAngle + angleDelta, 0, 180);
+        if (BombAngle < 90)
+        {
+            transform.localScale = new Vector3(baseScale.x,baseScale.y);
+        } else {
+            transform.localScale = new Vector3(-baseScale.x, baseScale.y);
+        }
     }
 
     private void Movement(float hInput)
@@ -191,6 +197,15 @@ public class Player : MonoBehaviour
         if (!canShoot)
             return;
         isShooting = true;
+        var direction = Mathf.Sign(transform.localScale.x);
+        if (direction == 1)
+        {
+            BombAngle = 60;
+        } else
+        {
+            BombAngle = 120;
+        }
+
         playerState = PlayerState.Shooting;
         animator.SetBool("IsShooting",true);
     }
