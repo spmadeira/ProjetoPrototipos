@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Bomb : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Bomb : MonoBehaviour
     public LayerMask ExplosionLayer;
     public GameObject ExplosionPrefab;
     private bool HasExploded = false;
+
+    public UnityEvent ExplodeEvent;
     public void Start()
     {
         HasExploded = false;
@@ -51,6 +54,7 @@ public class Bomb : MonoBehaviour
         
         Destroy(gameObject);
         Instantiate(ExplosionPrefab).transform.position = transform.position;
+        ExplodeEvent.Invoke();
     }
 
     private void OnCollisionEnter2D(Collision2D other)

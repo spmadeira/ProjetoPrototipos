@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
     public float EnergyBarHeight = 6;
     public Texture EnergyBarTexture;
     public Color EneryBarColor = Color.green;
+    public Color EmptyEnergyBarColor = Color.red;
 
     public Transform BombSpawn;
     public GameObject BombPrefab;
@@ -39,6 +41,8 @@ public class Player : MonoBehaviour
     public float BombForceMultiplier;
     public float BombTorqueMultiplier;
     private Vector2 BombAngleVector => new Vector2(Mathf.Cos(BombAngle * Mathf.Deg2Rad) * -(Mathf.Sign(transform.localScale.x)), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
+
+    public UnityEvent<Bomb> ShootBombEvent;
     
     public void Start()
     {
@@ -51,7 +55,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         UpdateAnimator();
-        
+
+        if (GameController.Instance.ActivePlayer != this)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Z))
             Jump();
 
@@ -66,6 +73,9 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameController.Instance.ActivePlayer != this)
+            return;
+        
         var hInput = Input.GetAxisRaw("Horizontal");
         var vInput = Input.GetAxisRaw("Vertical");
         
@@ -92,19 +102,26 @@ public class Player : MonoBehaviour
 
     private void OnGUI()
     {
-        if (isShooting)
+        if (isShooting || GameController.Instance.ActivePlayer != this)
             return;
         
-        GUI.color = EneryBarColor;
         var position = camera.WorldToScreenPoint(EnergyBarLocation.position);
         var convertedPosY = Screen.height - position.y;
         
-        var startPosition = new Vector2(position.x - (EnergyBarLength / 2), convertedPosY - EnergyBarHeight/2);
-        var endPosition = new Vector2(EnergyBarLength * (CurrentEnergy / MaxEnergy), + EnergyBarHeight);
+        var energyBarRectStart = new Vector2(position.x - (EnergyBarLength / 2), convertedPosY - EnergyBarHeight/2);
+        var energyBarRectEnd = new Vector2(EnergyBarLength * (CurrentEnergy / MaxEnergy), EnergyBarHeight);
+        
+        var emptyBarRectStart = new Vector2(energyBarRectStart.x+energyBarRectEnd.x,convertedPosY - EnergyBarHeight/2);
+        var emptyBarRectEnd = new Vector2(EnergyBarLength - energyBarRectEnd.x,EnergyBarHeight);
 
-        var energyBarRect = new Rect(startPosition, endPosition);
+        
+        var energyBarRect = new Rect(energyBarRectStart, energyBarRectEnd);
+        var emptyEnergyBarRect = new Rect(emptyBarRectStart,emptyBarRectEnd);
 
+        GUI.color = EneryBarColor;
         GUI.DrawTexture(energyBarRect, EnergyBarTexture);
+        GUI.color = EmptyEnergyBarColor;
+        GUI.DrawTexture(emptyEnergyBarRect,EnergyBarTexture);
     }
 
     private void UpdateAnimator()
@@ -147,6 +164,7 @@ public class Player : MonoBehaviour
     private void ShootBomb()
     {
         var bomb = Instantiate(BombPrefab, BombSpawn.position, BombSpawn.rotation);
+        var bombComponent = bomb.GetComponent<Bomb>();
         var bombRigidbody2d = bomb.GetComponent<Rigidbody2D>();
 
         var force = BombForceMultiplier * BombForce * BombAngleVector;
@@ -154,5 +172,6 @@ public class Player : MonoBehaviour
         
         bombRigidbody2d.AddForce(force);
         bombRigidbody2d.AddTorque(torque);
+        ShootBombEvent.Invoke(bombComponent);
     }
 }
