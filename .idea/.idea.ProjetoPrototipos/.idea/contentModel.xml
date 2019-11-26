@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Unity\Projects\ProjetoPrototipos" t="IncludeRecursive">
+    <e p="$USER_HOME$/.Rider2019.2/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_ProjetoPrototipos.-383510825.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Bomb" t="Include">
@@ -9,6 +11,11 @@
         </e>
         <e p="DestroyAtEnd.cs" t="Include" />
         <e p="Explosions" t="Include">
+          <e p="X_plosion" t="Include">
+            <e p="spritesheet" t="Include">
+              <e p="spritesheet.txt" t="Include" />
+            </e>
+          </e>
           <e p="license.txt" t="Include" />
           <e p="readme.txt" t="Include" />
           <e p="round_explosion" t="Include">
@@ -31,27 +38,20 @@
               <e p="spritesheet.txt" t="Include" />
             </e>
           </e>
-          <e p="X_plosion" t="Include">
-            <e p="spritesheet" t="Include">
-              <e p="spritesheet.txt" t="Include" />
-            </e>
-          </e>
         </e>
         <e p="IndicateAngle.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="GameController.cs" t="Include" />
           <e p="Player.cs" t="Include" />
         </e>
-        <e p="test.cs" t="Include" />
         <e p="Test1.cs" t="Include" />
         <e p="TrackTransform.cs" t="Include" />
+        <e p="test.cs" t="Include" />
       </e>
+      <e p="ProjetoPrototipos.sln" t="IncludeFlat" />
+      <e p="Temp/bin" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
-      <e p="ProjetoPrototipos.sln" t="IncludeFlat" />
-      <e p="Temp\bin" t="ExcludeRecursive" />
     </e>
-    <e p="C:\Users\samue\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\samue\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ProjetoPrototipos.-389692394.00" t="ExcludeRecursive" />
   </component>
 </project>

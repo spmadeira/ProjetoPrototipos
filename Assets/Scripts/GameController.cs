@@ -78,27 +78,45 @@ public class GameController : MonoBehaviour
 
     private Player NextPlayer()
     {
-        CurrentTeam.MoveNext();
-
-        if (CurrentTeam.Current != null)
+//        CurrentTeam.MoveNext();
+//
+//        if (CurrentTeam.Current != null)
+//        {
+//            //PlayerTurn(CurrentTeam.Current);
+//            return CurrentTeam.Current;
+//        }
+//        else
+//        {
+//            Teams.MoveNext();
+//            if (Teams.Current == null)
+//            {
+//                Teams.Reset();
+//                Teams.MoveNext();
+//            }
+//
+//            CurrentTeam = Teams.Current.GetEnumerator();
+//            CurrentTeam.MoveNext();
+//            //PlayerTurn(CurrentTeam.Current);
+//            return CurrentTeam.Current;
+//        }
+        
+        //Checar se tem um time vazio
+        Teams.MoveNext();
+        if (Teams.Current == null)
         {
-            //PlayerTurn(CurrentTeam.Current);
-            return CurrentTeam.Current;
-        }
-        else
-        {
+            Teams.Reset();
             Teams.MoveNext();
-            if (Teams.Current == null)
-            {
-                Teams.Reset();
-                Teams.MoveNext();
-            }
-
-            CurrentTeam = Teams.Current.GetEnumerator();
-            CurrentTeam.MoveNext();
-            //PlayerTurn(CurrentTeam.Current);
-            return CurrentTeam.Current;
         }
+
+        CurrentTeam = Teams.Current.GetEnumerator();
+        CurrentTeam.MoveNext();
+        if (CurrentTeam.Current == null)
+        {
+            CurrentTeam.Reset();
+            CurrentTeam.MoveNext();
+        }
+
+        return CurrentTeam.Current;
     }
 
     private IEnumerator DelaySeconds(float delay, Action action)
