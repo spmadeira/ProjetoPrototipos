@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
         PlayerTurn(NextPlayer());
     }
 
-    private void PlayerTurn(Player player)
+    public void PlayerTurn(Player player)
     {
         ActivePlayer = player;
         player.CurrentEnergy = 100;
@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour
         bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(NextPlayer()))));
     }
 
-    private Player NextPlayer()
+    public Player NextPlayer()
     {
 //        CurrentTeam.MoveNext();
 //

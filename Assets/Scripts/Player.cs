@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     
     public void Start()
     {
+        Health = 1;
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         baseScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
@@ -245,7 +246,7 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         Health--;
-        if (Health < 0)
+        if (Health <= 0)
         {
             animator.Play("Player_Die");
         }
@@ -257,6 +258,12 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-        Instantiate(DeathPrefab).transform.position = transform.position;
+        //Instantiate(DeathPrefab).transform.position = transform.position;
+        Team.Remove(this);
+        if (GameController.Instance.ActivePlayer == this)
+        {
+            GameController.Instance.PlayerTurn(GameController.Instance.NextPlayer());
+        }
+        Destroy(gameObject);
     }
 }
