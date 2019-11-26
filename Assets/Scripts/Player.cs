@@ -57,7 +57,6 @@ public class Player : MonoBehaviour
     
     public void Start()
     {
-        Health = 1;
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         baseScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
