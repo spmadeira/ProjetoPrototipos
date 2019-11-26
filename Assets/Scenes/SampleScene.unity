@@ -251,7 +251,7 @@ PrefabInstance:
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
@@ -46747,7 +46747,7 @@ PrefabInstance:
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
@@ -46835,6 +46835,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376038, guid: e27a8038045684b4e9ddcc501993329c,
+        type: 3}
+      propertyPath: WalkEnergyCost
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e27a8038045684b4e9ddcc501993329c, type: 3}
 --- !u!114 &938600016 stripped
@@ -46915,6 +46920,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376038, guid: e27a8038045684b4e9ddcc501993329c,
+        type: 3}
+      propertyPath: WalkEnergyCost
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e27a8038045684b4e9ddcc501993329c, type: 3}
@@ -47059,6 +47069,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376038, guid: e27a8038045684b4e9ddcc501993329c,
+        type: 3}
+      propertyPath: WalkEnergyCost
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e27a8038045684b4e9ddcc501993329c, type: 3}
 --- !u!114 &1453547080 stripped
@@ -47139,6 +47154,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611562635936376038, guid: e27a8038045684b4e9ddcc501993329c,
+        type: 3}
+      propertyPath: WalkEnergyCost
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e27a8038045684b4e9ddcc501993329c, type: 3}
@@ -47229,7 +47249,7 @@ PrefabInstance:
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
@@ -47325,7 +47345,7 @@ PrefabInstance:
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}
       propertyPath: JumpEnergyCost
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7611562635936376038, guid: 986c7a025a8b2aa43af5d89a3a4e1a40,
         type: 3}

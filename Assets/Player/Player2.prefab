@@ -248,12 +248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db5dbb2780870e40ab12f5a313892e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canShoot: 0
   isShooting: 0
+  Health: 3
   MaxEnergy: 100
   CurrentEnergy: 100
   JumpEnergyCost: 20
-  WalkEnergyCost: 10
+  WalkEnergyCost: 15
+  AngleChangeSpeed: 2
   MovementSpeed: 10
   JumpForce: 1100
   FeetCollisionRadius: 0.05
@@ -280,6 +281,7 @@ MonoBehaviour:
   ShootBombEvent:
     m_PersistentCalls:
       m_Calls: []
+  Team: []
 --- !u!50 &7611562635936376025
 Rigidbody2D:
   serializedVersion: 4

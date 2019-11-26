@@ -137,16 +137,23 @@ MonoBehaviour:
   CollisionTimerCost: 80
   StayTimerCost: 15
   ExplosionRadius: 3
+  DamageRadius: 3
+  DamageKnockbackForce: 800
   ExplosionLayer:
     serializedVersion: 2
     m_Bits: 256
+  DamageLayer:
+    serializedVersion: 2
+    m_Bits: 512
   ExplosionPrefab: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
   TimerFont: 0
   TimerFontSize: 12
   TimerLocation: {fileID: 7064031124928803841}
+  showRadius: 0
   ExplodeEvent:
     m_PersistentCalls:
       m_Calls: []
+  Team: []
 --- !u!1 &4472196994082289184
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,10 @@ public class Bomb : MonoBehaviour
     public int CollisionTimerCost = 80;
     public int StayTimerCost = 15;
     public float ExplosionRadius = 3;
+    public float DamageRadius;
+    public float DamageKnockbackForce = 800;
     public LayerMask ExplosionLayer;
+    public LayerMask DamageLayer;
     public GameObject ExplosionPrefab;
     public FontStyle TimerFont;
     public int TimerFontSize;
@@ -19,7 +22,19 @@ public class Bomb : MonoBehaviour
     private bool HasExploded = false;
     private Camera camera;
 
+#if UNITY_EDITOR
+    public enum ShowRadius
+    {
+        None,
+        Explosion,
+        Damage
+    };
+
+    public ShowRadius showRadius;
+#endif
+    
     public UnityEvent ExplodeEvent = new UnityEvent();
+    [HideInInspector]public List<Player> Team = null;
     public void Start()
     {
         camera = Camera.main;
@@ -36,8 +51,23 @@ public class Bomb : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, ExplosionRadius);
+#if UNITY_EDITOR
+        switch (showRadius)
+        {
+            case ShowRadius.None:
+                break;
+            case ShowRadius.Explosion:
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(transform.position, ExplosionRadius);
+                break;
+            case ShowRadius.Damage:
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(transform.position, DamageRadius);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+#endif
     }
 
     private void OnGUI()
@@ -59,6 +89,38 @@ public class Bomb : MonoBehaviour
     private void Explode()
     {
         HasExploded = true;
+        DestroyBlocks();
+        DamagePlayers();
+        
+        Instantiate(ExplosionPrefab).transform.position = transform.position;
+        ExplodeEvent.Invoke();
+        Destroy(gameObject);
+    }
+
+    private void DamagePlayers()
+    {
+        var hits = Physics2D.OverlapCircleAll(transform.position, DamageRadius, DamageLayer);
+
+        foreach (var hit in hits)
+        {
+            var isPlayer = hit.TryGetComponent<Player>(out var player);
+            
+            if (!isPlayer || player.Team == Team)
+                continue;
+
+            var hasCollider = player.TryGetComponent<Rigidbody2D>(out var rb2d);
+            if (!hasCollider)
+                continue;
+            var position = transform.position;
+            var point = hit.ClosestPoint(position);
+            var away = player.transform.position - position;
+            rb2d.AddForceAtPosition(away.normalized*DamageKnockbackForce,point);
+            player.TakeDamage();
+        }
+    }
+    
+    private void DestroyBlocks()
+    {
         var hits = Physics2D.OverlapCircleAll(transform.position, ExplosionRadius, ExplosionLayer);
         
         //Quando uma tile é destruida as adjacentes são reconstruidas, então é necessário adquirir a referencia
@@ -72,12 +134,8 @@ public class Bomb : MonoBehaviour
 
         foreach (var tile in tilesToDestroy)
             GameController.Instance.Tilemap.SetTile(tile,null);
-        
-        Instantiate(ExplosionPrefab).transform.position = transform.position;
-        ExplodeEvent.Invoke();
-        Destroy(gameObject);
     }
-
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))

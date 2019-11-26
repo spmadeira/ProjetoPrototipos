@@ -47,9 +47,12 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         Teams = new List<List<Player>>{Team1, Team2}.GetEnumerator();
-        Teams.MoveNext();
+        //Teams.MoveNext();
 
-        CurrentTeam = Teams.Current.GetEnumerator();
+        Team1.ForEach(player => player.Team = Team1);
+        Team2.ForEach(player => player.Team = Team2);
+        
+        //CurrentTeam = Teams.Current.GetEnumerator();
         PlayerTurn(NextPlayer());
     }
 

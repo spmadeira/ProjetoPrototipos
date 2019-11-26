@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public bool isShooting = false;
     private bool IsGrounded => feet.Select(foot => Physics2D.OverlapCircle(foot.position, FeetCollisionRadius, CollisionLayer)).Any(hit => hit != null);
 
+    public int Health = 3;
     public int MaxEnergy = 100;
     public float CurrentEnergy;
     public int JumpEnergyCost = 20;
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour
     public Color EneryBarColor = Color.green;
     public Color EmptyEnergyBarColor = Color.red;
 
+    public GameObject DeathPrefab;
     public Transform BombSpawn;
     public GameObject BombPrefab;
     [Range(0,180)]public float BombAngle;
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
     private Vector2 BombAngleVector => new Vector2(-Mathf.Cos(BombAngle * Mathf.Deg2Rad), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
 
     public BombEvent ShootBombEvent = new BombEvent();
+    [HideInInspector]public List<Player> Team = null;
 
     public enum PlayerState { Inactive, Moving, Shooting };
 
@@ -112,6 +115,11 @@ public class Player : MonoBehaviour
 
             Movement(hInput);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Team?.Remove(this);
     }
 
     private void AdjustAngle(float angleDelta)
@@ -227,9 +235,28 @@ public class Player : MonoBehaviour
 
         var force = BombForceMultiplier * BombForce * BombAngleVector;
         var torque = BombForce * BombTorqueMultiplier;
+        bombComponent.Team = Team;
         
         bombRigidbody2d.AddForce(force);
         bombRigidbody2d.AddTorque(torque);
         ShootBombEvent.Invoke(bombComponent);
+    }
+
+    public void TakeDamage()
+    {
+        Health--;
+        if (Health < 0)
+        {
+            animator.Play("Player_Die");
+        }
+        else
+        {
+            animator.Play("Player_Take_Damage");
+        }
+    }
+
+    public void Die()
+    {
+        Instantiate(DeathPrefab).transform.position = transform.position;
     }
 }
