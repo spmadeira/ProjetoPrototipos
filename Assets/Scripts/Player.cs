@@ -205,6 +205,7 @@ public class Player : MonoBehaviour
         if (!canShoot)
             return;
         isShooting = true;
+        animator.Play("Player_Windup_Bomb");
         var direction = Mathf.Sign(transform.localScale.x);
         if (direction == 1)
         {
@@ -258,11 +259,14 @@ public class Player : MonoBehaviour
     public void Die()
     {
         //Instantiate(DeathPrefab).transform.position = transform.position;
-        Team.Remove(this);
+        //Team.Remove(this);
+        gameObject.SetActive(false);
         if (GameController.Instance.ActivePlayer == this)
         {
-            GameController.Instance.PlayerTurn(GameController.Instance.NextPlayer());
+            //GameController.Instance.PlayerTurn(GameController.Instance.NextPlayer());
+            GameController.Instance.NextPlayer();
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
+
     }
 }

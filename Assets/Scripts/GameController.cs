@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -36,24 +37,24 @@ public class GameController : MonoBehaviour
     public TrackTransform camera = null;
     public Player ActivePlayer = null;
     public IEnumerator<Player> CurrentTeam = null;
-    public IEnumerator<List<Player>> Teams = null;
-
-    //Refazer tudo isso pro fluxo fazer sentido.
-    //Jogador recebe controle e camera
-    //Jogador move.
-    //Jogador atira bomba, perde controle e camera, bomba ganha camera
-    //Bomba vai e explode. Bomba perde camera.
-    //Outro jogador recebe bomba e camera.
+    public IEnumerator<IEnumerator<Player>> Teams = null;
+    private int Team1Index = -1;
+    private int Team2Index = -1;
+    private int CTeam = 0;
+    public Text Text;
+    
     private void Start()
     {
-        Teams = new List<List<Player>>{Team1, Team2}.GetEnumerator();
+        //Teams = new List<List<Player>>{Team1, Team2}.GetEnumerator();
+        Teams = new List<IEnumerator<Player>> {Team1.GetEnumerator(), Team2.GetEnumerator()}.GetEnumerator();
         //Teams.MoveNext();
 
         Team1.ForEach(player => player.Team = Team1);
         Team2.ForEach(player => player.Team = Team2);
-        
+        CTeam = 2;
         //CurrentTeam = Teams.Current.GetEnumerator();
-        PlayerTurn(NextPlayer());
+        //PlayerTurn(NextPlayer());
+        NextPlayer();
     }
 
     public void PlayerTurn(Player player)
@@ -73,34 +74,30 @@ public class GameController : MonoBehaviour
     private void FollowBomb(Bomb bomb)
     {
         camera.Target = bomb.transform;
-        bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(NextPlayer()))));
+        //bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(NextPlayer()))));
+        bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, NextPlayer)));
     }
 
-    public Player NextPlayer()
+    public void NextPlayer()
     {
-//        CurrentTeam.MoveNext();
-//
-//        if (CurrentTeam.Current != null)
-//        {
-//            //PlayerTurn(CurrentTeam.Current);
-//            return CurrentTeam.Current;
-//        }
-//        else
-//        {
-//            Teams.MoveNext();
-//            if (Teams.Current == null)
-//            {
-//                Teams.Reset();
-//                Teams.MoveNext();
-//            }
-//
-//            CurrentTeam = Teams.Current.GetEnumerator();
-//            CurrentTeam.MoveNext();
-//            //PlayerTurn(CurrentTeam.Current);
-//            return CurrentTeam.Current;
-//        }
+        if (!Team1.Any(t => t.gameObject.activeSelf))
+        {
+            var obj = new GameObject();
+            obj.transform.position = new Vector3(0,0);
+            camera.Target = obj.transform;
+            Text.enabled = true;
+            Text.text = "Time 2 Venceu!";
+            return;
+        }
+        if (!Team2.Any(t => t.gameObject.activeSelf))
+        {
+            var obj = new GameObject();
+            obj.transform.position = new Vector3(0,0);
+            camera.Target = obj.transform;
+            Text.enabled = true;
+            Text.text = "Time 1 Venceu!";
+        }
         
-        //Checar se tem um time vazio
         Teams.MoveNext();
         if (Teams.Current == null)
         {
@@ -108,15 +105,28 @@ public class GameController : MonoBehaviour
             Teams.MoveNext();
         }
 
-        CurrentTeam = Teams.Current.GetEnumerator();
-        CurrentTeam.MoveNext();
-        if (CurrentTeam.Current == null)
+        CurrentTeam = Teams.Current; //.GetEnumerator();
+        Player player = null;
+        int count = 0;
+        while (player == null)
         {
-            CurrentTeam.Reset();
+            if (count > Team1.Count+Team2.Count)
+            {
+                break;
+            }
+            count++;
             CurrentTeam.MoveNext();
+            if (CurrentTeam.Current == null)
+            {
+                CurrentTeam.Reset();
+            } else if (CurrentTeam.Current.gameObject.activeSelf)
+            {
+                player = CurrentTeam.Current;
+            }
         }
 
-        return CurrentTeam.Current;
+        //return CurrentTeam.Current;
+        PlayerTurn(CurrentTeam.Current);
     }
 
     private IEnumerator DelaySeconds(float delay, Action action)

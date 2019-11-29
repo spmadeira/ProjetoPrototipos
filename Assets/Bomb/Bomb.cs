@@ -86,12 +86,15 @@ public class Bomb : MonoBehaviour
         //GUI.Label(new Rect(centerPosition,new Vector2(0,0)), secondsUntilExplosion.ToString(), style);
     }
 
-    private void Explode()
+    public void Explode(bool dud = false)
     {
         HasExploded = true;
-        DestroyBlocks();
-        DamagePlayers();
-        
+        if (!dud)
+        {
+            DestroyBlocks();
+            DamagePlayers();
+        }
+
         Instantiate(ExplosionPrefab).transform.position = transform.position;
         ExplodeEvent.Invoke();
         Destroy(gameObject);

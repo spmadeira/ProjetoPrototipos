@@ -13,5 +13,12 @@ public class DeathZone : MonoBehaviour
         {
             player.Die();
         }
+
+        var isBomb = collision.TryGetComponent<Bomb>(out var bomb);
+        
+        if (isBomb)
+        {
+          bomb.Explode(true);
+        }
     }
 }
