@@ -31,6 +31,12 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
+
     public Tilemap Tilemap = null;
     public List<Player> Team1 = new List<Player>();
     public List<Player> Team2 = new List<Player>();
@@ -75,7 +81,7 @@ public class GameController : MonoBehaviour
     {
         camera.Target = bomb.transform;
         //bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, () => PlayerTurn(NextPlayer()))));
-        bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(0.5f, NextPlayer)));
+        bomb.ExplodeEvent.AddListener(() => StartCoroutine(DelaySeconds(1f, NextPlayer)));
     }
 
     public void NextPlayer()
