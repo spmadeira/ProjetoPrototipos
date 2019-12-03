@@ -66,18 +66,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //UpdateAnimator();
-
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //    Jump();
-
-        //if (Input.GetKeyDown(KeyCode.X))
-        //{
-        //    if (!isShooting)
-        //        StartShoot();
-        //    else
-        //        EndShoot();
-        //}
         UpdateAnimator();
         switch (playerState)
         {

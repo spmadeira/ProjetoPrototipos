@@ -102,6 +102,7 @@ public class GameController : MonoBehaviour
             camera.Target = obj.transform;
             Text.enabled = true;
             Text.text = "Time 1 Venceu!";
+            return;
         }
         
         Teams.MoveNext();
