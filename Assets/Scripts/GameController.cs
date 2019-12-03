@@ -44,6 +44,9 @@ public class GameController : MonoBehaviour
     public Player ActivePlayer = null;
     public IEnumerator<Player> CurrentTeam = null;
     public IEnumerator<IEnumerator<Player>> Teams = null;
+    public SkreduinoConnector SkreduinoConnector;
+    public float MaxBreathSeconds;
+    public float MaxBreathInterval;
     private int Team1Index = -1;
     private int Team2Index = -1;
     private int CTeam = 0;
@@ -140,5 +143,65 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         action.Invoke();
+    }
+
+    public void Shoot()
+    {
+        if (ActivePlayer == null)
+            return;
+        
+        if (ActivePlayer.playerState == Player.PlayerState.Moving)
+            ActivePlayer.StartShoot();
+        else if (ActivePlayer.playerState == Player.PlayerState.Shooting)
+            StartBreathMinigame();
+    }
+
+    public void Jump()
+    {
+        if (ActivePlayer == null)
+            return;
+        
+        if (ActivePlayer.playerState == Player.PlayerState.Moving)
+            ActivePlayer.Jump();
+    }
+
+    private bool _isBreathing = false;
+    private void StartBreathMinigame()
+    {
+        if (!_isBreathing)
+        {
+            _isBreathing = true;
+            StartCoroutine(BreathMinigame());
+        }
+    }
+
+    private IEnumerator BreathMinigame()
+    {
+        float currentBreathTime = 0f;
+        float currentIntervalTime = 0f;
+        
+        while (currentBreathTime < MaxBreathSeconds && currentIntervalTime < MaxBreathInterval)
+        {
+            var timeSinceLastUpdate = Time.deltaTime;
+
+            if (SkreduinoConnector.GetAxis("s") == 1) //Sopro > Threshold
+            {
+                currentBreathTime += timeSinceLastUpdate;
+                currentIntervalTime = 0f;
+            }
+            else
+            {
+                currentIntervalTime += timeSinceLastUpdate;
+            }
+
+            yield return null;
+        }
+
+        currentBreathTime = Mathf.Min(currentBreathTime, MaxBreathSeconds);
+        var relativeForce = currentBreathTime / MaxBreathSeconds;
+
+        ActivePlayer.EndShoot(relativeForce);
+        
+        _isBreathing = false;
     }
 }

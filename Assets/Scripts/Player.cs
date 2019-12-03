@@ -47,6 +47,9 @@ public class Player : MonoBehaviour
     public PlayerState playerState = PlayerState.Inactive;
     private Vector2 BombAngleVector => new Vector2(-Mathf.Cos(BombAngle * Mathf.Deg2Rad), Mathf.Sin(BombAngle * Mathf.Deg2Rad));
 
+    public int HorizontalInput =>
+        (int) (Input.GetAxisRaw("Horizontal") + GameController.Instance.SkreduinoConnector.GetAxis("h"));
+
     public BombEvent ShootBombEvent = new BombEvent();
     [HideInInspector]public List<Player> Team = null;
 
@@ -85,7 +88,7 @@ public class Player : MonoBehaviour
                 {
                     EndShoot();
                 }
-                var hInput = Input.GetAxisRaw("Horizontal");
+                var hInput = HorizontalInput;
                 if (hInput != 0)
                 {
                     AdjustAngle(hInput*AngleChangeSpeed);
@@ -98,8 +101,7 @@ public class Player : MonoBehaviour
     {
         if (playerState == PlayerState.Moving)
         {
-            var hInput = Input.GetAxisRaw("Horizontal");
-            var vInput = Input.GetAxisRaw("Vertical");
+            var hInput = HorizontalInput;
 
             Movement(hInput);
         }
@@ -130,15 +132,7 @@ public class Player : MonoBehaviour
         //rigidbody2d.velocity = new Vector2(hInput*MovementSpeed, rigidbody2d.velocity.y);
         transform.position += new Vector3(hInput*MovementSpeed*Time.deltaTime, 0);
     }
-
-    private void OnDrawGizmos()
-    {
-        //foreach (var foot in feet)
-        //{
-        //    Gizmos.DrawSphere(foot.position,FeetCollisionRadius);
-        //}
-    }
-
+    
     private void OnGUI()
     {
         if (playerState != PlayerState.Moving)
@@ -179,7 +173,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
         if (canJump && IsGrounded)
         {
@@ -188,7 +182,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void StartShoot()
+    public void StartShoot()
     {
         if (!canShoot)
             return;
@@ -207,26 +201,30 @@ public class Player : MonoBehaviour
         animator.SetBool("IsShooting",true);
     }
 
-    private void EndShoot()
+    public void EndShoot(float force = 1f)
     {
         if (!canShoot)
             return;
+
+        breathForce = force;
         isShooting = false;
         playerState = PlayerState.Inactive;
         animator.SetBool("IsShooting",false);
     }
 
+    private float breathForce = 1f;
+    
     private void ShootBomb()
     {
         var bomb = Instantiate(BombPrefab, BombSpawn.position, BombSpawn.rotation);
         var bombComponent = bomb.GetComponent<Bomb>();
         var bombRigidbody2d = bomb.GetComponent<Rigidbody2D>();
 
-        var force = BombForceMultiplier * BombForce * BombAngleVector;
+        var totalForce = BombForceMultiplier * BombForce * breathForce * BombAngleVector;
         var torque = BombForce * BombTorqueMultiplier;
         bombComponent.Team = Team;
         
-        bombRigidbody2d.AddForce(force);
+        bombRigidbody2d.AddForce(totalForce);
         bombRigidbody2d.AddTorque(torque);
         ShootBombEvent.Invoke(bombComponent);
     }
