@@ -151,9 +151,10 @@ public class GameController : MonoBehaviour
             return;
         
         if (ActivePlayer.playerState == Player.PlayerState.Moving)
+        {
             ActivePlayer.StartShoot();
-        else if (ActivePlayer.playerState == Player.PlayerState.Shooting)
-            StartBreathMinigame();
+            StartBreathMinigame(ActivePlayer);
+        } 
     }
 
     public void Jump()
@@ -166,16 +167,16 @@ public class GameController : MonoBehaviour
     }
 
     private bool _isBreathing = false;
-    private void StartBreathMinigame()
+    private void StartBreathMinigame(Player player)
     {
         if (!_isBreathing)
         {
             _isBreathing = true;
-            StartCoroutine(BreathMinigame());
+            StartCoroutine(BreathMinigame(player));
         }
     }
 
-    private IEnumerator BreathMinigame()
+    private IEnumerator BreathMinigame(Player player)
     {
         float currentBreathTime = 0f;
         float currentIntervalTime = 0f;
@@ -200,7 +201,8 @@ public class GameController : MonoBehaviour
         currentBreathTime = Mathf.Min(currentBreathTime, MaxBreathSeconds);
         var relativeForce = currentBreathTime / MaxBreathSeconds;
 
-        ActivePlayer.EndShoot(relativeForce);
+        if (player.playerState == Player.PlayerState.Shooting)
+            player.EndShoot(relativeForce);
         
         _isBreathing = false;
     }

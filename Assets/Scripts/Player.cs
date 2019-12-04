@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     public Transform BombSpawn;
     public GameObject BombPrefab;
     [Range(0,180)]public float BombAngle;
-    [Range(0, 1)] public float BombForce;
+    [Range(0.8f, 1.3f)] public float BombForce;
     public float BombForceMultiplier;
     public float BombTorqueMultiplier;
     public PlayerState playerState = PlayerState.Inactive;
@@ -75,7 +75,8 @@ public class Player : MonoBehaviour
             case PlayerState.Inactive:
                 break;
             case PlayerState.Moving:
-                if (Input.GetButtonDown("Jump")){
+                if (Input.GetButtonDown("Jump"))
+                {
                     Jump();
                 }
                 if (Input.GetButtonDown("Fire1"))
@@ -201,26 +202,34 @@ public class Player : MonoBehaviour
         animator.SetBool("IsShooting",true);
     }
 
-    public void EndShoot(float force = 1f)
+    public void EndShoot(float force)
     {
         if (!canShoot)
             return;
 
-        breathForce = force;
+        BombForce = 0.8f + force/2f;
         isShooting = false;
         playerState = PlayerState.Inactive;
         animator.SetBool("IsShooting",false);
     }
 
-    private float breathForce = 1f;
-    
+    public void EndShoot()
+    {
+        if (!canShoot)
+            return;
+
+        isShooting = false;
+        playerState = PlayerState.Inactive;
+        animator.SetBool("IsShooting", false);
+    }
+
     private void ShootBomb()
     {
         var bomb = Instantiate(BombPrefab, BombSpawn.position, BombSpawn.rotation);
         var bombComponent = bomb.GetComponent<Bomb>();
         var bombRigidbody2d = bomb.GetComponent<Rigidbody2D>();
 
-        var totalForce = BombForceMultiplier * BombForce * breathForce * BombAngleVector;
+        var totalForce = BombForceMultiplier * BombForce * BombAngleVector;
         var torque = BombForce * BombTorqueMultiplier;
         bombComponent.Team = Team;
         
