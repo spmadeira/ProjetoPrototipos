@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -96,6 +97,7 @@ public class GameController : MonoBehaviour
             camera.Target = obj.transform;
             Text.enabled = true;
             Text.text = "Time 2 Venceu!";
+            StartCoroutine(RestartGame());
             return;
         }
         if (!Team2.Any(t => t.gameObject.activeSelf))
@@ -105,6 +107,7 @@ public class GameController : MonoBehaviour
             camera.Target = obj.transform;
             Text.enabled = true;
             Text.text = "Time 1 Venceu!";
+            StartCoroutine(RestartGame());
             return;
         }
         
@@ -213,5 +216,15 @@ public class GameController : MonoBehaviour
             player.EndShoot(relativeForce);
         
         player.SetBreathBarHeight(0);
+    }
+
+    private IEnumerator RestartGame()
+    {
+        var asyncOp = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        asyncOp.allowSceneActivation = false;
+
+        yield return new WaitForSeconds(10);
+
+        asyncOp.allowSceneActivation = true;
     }
 }
