@@ -202,6 +202,7 @@ public class GameController : MonoBehaviour
                 currentIntervalTime += timeSinceLastUpdate;
             }
 
+            player.SetBreathBarHeight(currentBreathTime/MaxBreathSeconds);
             yield return null;
         }
 
@@ -210,5 +211,7 @@ public class GameController : MonoBehaviour
 
         if (player.playerState == Player.PlayerState.Shooting)
             player.EndShoot(relativeForce);
+        
+        player.SetBreathBarHeight(currentBreathTime/MaxBreathSeconds );
     }
 }

@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     public Color EneryBarColor = Color.green;
     public Color EmptyEnergyBarColor = Color.red;
 
+    public GameObject BreathBar;
+    private float baseBreathBarHeight;
     public GameObject DeathPrefab;
     public Transform BombSpawn;
     public GameObject BombPrefab;
@@ -64,7 +66,8 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         baseScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         camera = Camera.main;
-
+        baseBreathBarHeight = BreathBar.transform.localScale.y;
+        SetBreathBarHeight(0f);
     }
 
     private void Update()
@@ -266,5 +269,10 @@ public class Player : MonoBehaviour
         }
         //Destroy(gameObject);
 
+    }
+
+    public void SetBreathBarHeight(float rel)
+    {
+        BreathBar.transform.localScale = new Vector2(BreathBar.transform.localScale.x, rel*baseBreathBarHeight);
     }
 }
