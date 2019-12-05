@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     public BombEvent ShootBombEvent = new BombEvent();
     [HideInInspector]public List<Player> Team = null;
 
-    public enum PlayerState { Inactive, Moving, Shooting };
+    public enum PlayerState { Inactive, Moving, Shooting, Breathing };
 
     [System.Serializable]
     public class BombEvent : UnityEvent<Bomb> { }
@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
         switch (playerState)
         {
             case PlayerState.Inactive:
+            case PlayerState.Breathing:
                 break;
             case PlayerState.Moving:
                 if (Input.GetButtonDown("Jump"))
@@ -167,6 +168,7 @@ public class Player : MonoBehaviour
         animator.SetBool("IsMoving", isMoving && canMove);
         animator.SetBool("IsGrounded", IsGrounded);
         animator.SetFloat("VerticalSpeed", rigidbody2d.velocity.y);
+        //animator.SetBool("IsBreathing", playerState == PlayerState.Breathing);
 
         if (playerState == PlayerState.Moving && hInput != 0)
         {

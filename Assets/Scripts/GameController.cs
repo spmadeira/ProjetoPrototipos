@@ -167,13 +167,12 @@ public class GameController : MonoBehaviour
         if (ActivePlayer.playerState == Player.PlayerState.Moving)
             ActivePlayer.Jump();
     }
-
-    private bool _isBreathing = false;
+    
     private void StartBreathMinigame(Player player)
     {
-        if (!_isBreathing)
+        if (player.playerState != Player.PlayerState.Breathing)
         {
-            _isBreathing = true;
+            player.playerState = Player.PlayerState.Breathing;
             StartCoroutine(BreathMinigame(player));
         }
     }
@@ -211,7 +210,5 @@ public class GameController : MonoBehaviour
 
         if (player.playerState == Player.PlayerState.Shooting)
             player.EndShoot(relativeForce);
-        
-        _isBreathing = false;
     }
 }
