@@ -209,7 +209,7 @@ public class GameController : MonoBehaviour
         currentBreathTime = Mathf.Min(currentBreathTime, MaxBreathSeconds);
         var relativeForce = currentBreathTime / MaxBreathSeconds;
 
-        if (player.playerState == Player.PlayerState.Shooting)
+        if (player.playerState == Player.PlayerState.Breathing)
             player.EndShoot(relativeForce);
         
         player.SetBreathBarHeight(currentBreathTime/MaxBreathSeconds );
