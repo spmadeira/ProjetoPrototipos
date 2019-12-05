@@ -160,7 +160,8 @@ public class Player : MonoBehaviour
 
     private void UpdateAnimator()
     {
-        var hInput = Input.GetAxisRaw("Horizontal");
+        //var hInput = Input.GetAxisRaw("Horizontal");
+        var hInput = HorizontalInput;
         var isMoving = (hInput != 0) && canMove;
         
         animator.SetBool("IsMoving", isMoving && canMove);

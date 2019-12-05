@@ -153,8 +153,10 @@ public class GameController : MonoBehaviour
         if (ActivePlayer.playerState == Player.PlayerState.Moving)
         {
             ActivePlayer.StartShoot();
+        } else if (ActivePlayer.playerState == Player.PlayerState.Shooting)
+        {
             StartBreathMinigame(ActivePlayer);
-        } 
+        }
     }
 
     public void Jump()

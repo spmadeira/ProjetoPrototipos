@@ -400,8 +400,8 @@ MonoBehaviour:
   camera: {fileID: 438245492}
   ActivePlayer: {fileID: 0}
   SkreduinoConnector: {fileID: 438245494}
-  MaxBreathSeconds: 0
-  MaxBreathInterval: 0
+  MaxBreathSeconds: 5
+  MaxBreathInterval: 0.5
   Text: {fileID: 1649800801}
 --- !u!114 &438245492
 MonoBehaviour:
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handshakeCode: pprot
-  VerboseDebugging: 0
+  VerboseDebugging: 1
   Actions:
   - actionIdentifier: jump
     actionEvent:
