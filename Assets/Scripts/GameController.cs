@@ -178,6 +178,12 @@ public class GameController : MonoBehaviour
 
     private IEnumerator BreathMinigame(Player player)
     {
+        Debug.Log("começou minigame");
+        while (SkreduinoConnector.GetAxis("s") != 1)
+            yield return null;
+        
+        Debug.Log("soprando");
+
         float currentBreathTime = 0f;
         float currentIntervalTime = 0f;
         

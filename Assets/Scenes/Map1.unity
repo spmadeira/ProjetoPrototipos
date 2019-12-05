@@ -475,7 +475,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 438245491}
-          m_MethodName: Jump
+          m_MethodName: Shoot
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
