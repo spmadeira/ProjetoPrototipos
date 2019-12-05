@@ -212,6 +212,6 @@ public class GameController : MonoBehaviour
         if (player.playerState == Player.PlayerState.Breathing)
             player.EndShoot(relativeForce);
         
-        player.SetBreathBarHeight(currentBreathTime/MaxBreathSeconds );
+        player.SetBreathBarHeight(0);
     }
 }

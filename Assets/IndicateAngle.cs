@@ -10,10 +10,10 @@ public class IndicateAngle : MonoBehaviour
 
     private void Update()
     {
-        if (!Player.isShooting && Indicator.activeSelf)
+        if (Player.playerState != Player.PlayerState.Shooting && Indicator.activeSelf)
         {
             Indicator.SetActive(false);
-        } else if (Player.isShooting)
+        } else if (Player.playerState == Player.PlayerState.Shooting)
         {
             if (!Indicator.activeSelf)
                 Indicator.SetActive(true);
