@@ -130,12 +130,17 @@ public class Player : MonoBehaviour
 
     private void Movement(float hInput)
     {
-        if (!canMove || hInput == 0)
-            return;
-
-        CurrentEnergy -= WalkEnergyCost * Time.fixedDeltaTime;
-        //rigidbody2d.velocity = new Vector2(hInput*MovementSpeed, rigidbody2d.velocity.y);
-        transform.position += new Vector3(hInput*MovementSpeed*Time.deltaTime, 0);
+        //if (!canMove || hInput == 0)
+        //    return;
+        if (canMove && hInput == 0)
+        {
+            rigidbody2d.velocity = new Vector2(0, rigidbody2d.velocity.y);
+        } else if (canMove && hInput != 0){
+            CurrentEnergy -= WalkEnergyCost * Time.fixedDeltaTime;
+            //rigidbody2d.velocity = new Vector2(hInput * MovementSpeed, rigidbody2d.velocity.y);
+            transform.position += new Vector3(hInput * MovementSpeed * Time.fixedDeltaTime, 0);
+        }
+        
     }
     
     private void OnGUI()

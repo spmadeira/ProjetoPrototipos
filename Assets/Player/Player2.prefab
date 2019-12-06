@@ -124,8 +124,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0038473904, y: 0.014116863}
-  m_Size: {x: 0.029769516, y: 0.030208617}
+  m_Offset: {x: -0.0038473904, y: 0.040011175}
+  m_Size: {x: 0.029769516, y: 0.08199723}
   m_Direction: 0
 --- !u!1 &7611562635375861954
 GameObject:
@@ -350,7 +350,7 @@ MonoBehaviour:
   EnergyBarHeight: 6
   EnergyBarTexture: {fileID: 2800000, guid: 80b02a2c41d42864ba548fd3be16ad04, type: 3}
   EneryBarColor: {r: 0, g: 1, b: 0, a: 1}
-  EmptyEnergyBarColor: {r: 1, g: 0, b: 0, a: 1}
+  EmptyEnergyBarColor: {r: 0, g: 0.35686275, b: 0, a: 1}
   BreathBar: {fileID: 1687329748116720620}
   DeathPrefab: {fileID: 0}
   BombSpawn: {fileID: 7611562635375861957}
@@ -557,8 +557,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0018236518, y: 0.013653899}
-  m_Size: {x: 0.030243015, y: 0.030243015}
+  m_Offset: {x: 0.0018236518, y: 0.03954822}
+  m_Size: {x: 0.030243015, y: 0.08203166}
   m_Direction: 0
 --- !u!1 &7611562636785559165
 GameObject:
